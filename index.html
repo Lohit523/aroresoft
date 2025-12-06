@@ -28,12 +28,21 @@
     color: transparent;
     white-space: nowrap;
     display: inline-block;
-    transition: opacity 0.12s ease-out;
 }
 
-.typewriter-fade-out {
-    opacity: 0;
+#typewriterCursor {
+    display: inline-block;
+    width: 2px;
+    height: 1.1em;
+    background: #38bdf8;
+    margin-left: 4px;
+    animation: blink 0.8s steps(1) infinite;
 }
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
 
 
         * {
@@ -1081,9 +1090,14 @@
         tzSelect.addEventListener("change", updateWorldClock);
     }
     // Smooth phrase switch in hero title (no jitter)
-(function() {
+// True slow typewriter animation (left → right)
+(function () {
     const el = document.getElementById("typewriterTarget");
     if (!el) return;
+
+    const cursor = document.createElement("span");
+    cursor.id = "typewriterCursor";
+    el.after(cursor);
 
     const phrases = [
         "Engineering Digital Precision",
@@ -1092,21 +1106,42 @@
         "Delivering Reliable Cloud Systems"
     ];
 
-    let index = 0;
+    let phraseIndex = 0;
+    let charIndex = 0;
+    let typing = true;
 
-    function nextPhrase() {
-        el.classList.add("typewriter-fade-out");
+    const TYPE_SPEED = 120;   // ← slow typing speed (bigger = slower)
+    const PAUSE_END = 1200;   // wait after full phrase
+    const DELETE_SPEED = 60;  // speed while deleting
 
-        setTimeout(() => {
-            index = (index + 1) % phrases.length;
-            el.textContent = phrases[index];
-            el.classList.remove("typewriter-fade-out");
-        }, 220);
+    function tick() {
+        const current = phrases[phraseIndex];
+
+        if (typing) {
+            el.textContent = current.slice(0, ++charIndex);
+
+            if (charIndex === current.length) {
+                typing = false;
+                setTimeout(tick, PAUSE_END);
+                return;
+            }
+
+            setTimeout(tick, TYPE_SPEED);
+        } else {
+            el.textContent = current.slice(0, --charIndex);
+
+            if (charIndex === 0) {
+                typing = true;
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+            }
+
+            setTimeout(tick, DELETE_SPEED);
+        }
     }
 
-    // Start with first phrase already set in HTML
-    setInterval(nextPhrase, 2400);
+    tick();
 })();
+
 
 </script>
 </body>
