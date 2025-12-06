@@ -22,6 +22,19 @@
             --border-subtle: #1f2937;
             --accent: #0a84ff;
         }
+#typewriterTarget {
+    background: linear-gradient(to right, #38bdf8, #0ea5e9, #4f46e5);
+    -webkit-background-clip: text;
+    color: transparent;
+    white-space: nowrap;
+    display: inline-block;
+    transition: opacity 0.12s ease-out;
+}
+
+.typewriter-fade-out {
+    opacity: 0;
+}
+
 
         * {
             box-sizing: border-box;
@@ -130,6 +143,7 @@
             transition: width 0.18s ease-out;
         }
 
+
         .nav-links a:hover {
             color: var(--text-main);
         }
@@ -178,6 +192,7 @@
             margin-bottom: 0.9rem;
         }
 
+
         .hero-title span {
             background: linear-gradient(to right, #38bdf8, #0ea5e9, #4f46e5);
             -webkit-background-clip: text;
@@ -191,6 +206,19 @@
             color: var(--text-muted);
             margin-bottom: 0.6rem;
         }
+.hero-subline {
+    white-space: nowrap !important;
+}
+
+.hero-title {
+    width: max-content !important;
+    display: inline-block !important;
+}
+
+.hero-title span {
+    white-space: nowrap !important;
+}
+
 
         .hero-body {
             font-size: 0.98rem;
@@ -240,7 +268,7 @@
         }
 
         .hero-meta {
-            margin-top: 1.6rem;
+            margin-top: 6.6rem;
             font-size: 0.8rem;
             color: var(--text-muted);
         }
@@ -419,6 +447,7 @@
             font-size: 1rem;
             color: var(--text-main);
         }
+
 
         .hero-orbit-chip {
             position: absolute;
@@ -697,9 +726,10 @@
             <div>
                 <div class="eyebrow">AroreSoft</div>
                 <h1 class="hero-title">
-                    <span>Engineering Digital Precision</span><br />
-                    for modern enterprises.
-                </h1>
+    <span id="typewriterTarget">Engineering Digital Precision</span><br />
+    for Modern Enterprises.
+</h1>
+
                 <div class="hero-tagline">
                     INTEGRATION • AUTOMATION • CLOUD SOLUTIONS
                 </div>
@@ -795,7 +825,7 @@
                     <div class="card-tag">INTEGRATION</div>
                     <h3 class="card-title">iPaaS &amp; API Integrations</h3>
                     <p class="card-body">
-                        Design and build integration flows using Dell Boomi, SAP CPI and REST/SOAP APIs.
+                        Design and build integration flows using  Boomi, SAP CPI and REST/SOAP APIs.
                         Real-time, scheduled and event-based patterns for critical business processes.
                     </p>
                 </article>
@@ -1050,7 +1080,34 @@
     if (tzSelect) {
         tzSelect.addEventListener("change", updateWorldClock);
     }
-</script>
+    // Smooth phrase switch in hero title (no jitter)
+(function() {
+    const el = document.getElementById("typewriterTarget");
+    if (!el) return;
 
+    const phrases = [
+        "Engineering Digital Precision",
+        "Building Intelligent Integrations",
+        "Automating Enterprise Workflows",
+        "Delivering Reliable Cloud Systems"
+    ];
+
+    let index = 0;
+
+    function nextPhrase() {
+        el.classList.add("typewriter-fade-out");
+
+        setTimeout(() => {
+            index = (index + 1) % phrases.length;
+            el.textContent = phrases[index];
+            el.classList.remove("typewriter-fade-out");
+        }, 220);
+    }
+
+    // Start with first phrase already set in HTML
+    setInterval(nextPhrase, 2400);
+})();
+
+</script>
 </body>
 </html>
